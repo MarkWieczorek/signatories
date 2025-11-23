@@ -6,35 +6,28 @@
         <h3> {{ action_kind | upper }}</h3>
     </div>
 
-    <div class="row extra-margin">
+    <div class="row extra-margin action_text">
+            {{ action_text | safe }}
+    </div>
 
-        <p>
-            {{ action_text }}
+    <div class="orcid-text">
+        <p class="center">
+            To participate, authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account
         </p>
     </div>
 
-    <div class="row extra-margin" style="text-align: center">
-        <p></p>
+    <div class="orcid-box center">
         <p><a class="btn btn-default btn-lg" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind }}</a></p>
     </div>
 
-    <div class="extra-margin">
-        <p></p>
-        <p class="center"><i>
-            To participate, sign in with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account using the above link.
-        </i></p>
-    </div>
-
-    <div class="center">
+    <div class="center toggle-signatories">
         <p>Total signatories: {{ total_signatures }}</p>
-    </div>
-    <div class="center">
-      <button data-toggle="collapse" aria-expanded="false" data-target="#show-signatories" aria-controls="show-signatories" class="btn btn-primary btn-sm">Show/Hide signatories</button>
+        <p><a class="toggle-text" data-toggle="collapse" aria-expanded="false" data-target="#show-signatories" aria-controls="show-signatories"><i class="bi bi-arrows-expand" style="font-size: 0.9em; padding-right: 0.9em;"></i>show / hide</a></p>
     </div>
 
     <div class="results collapse user-list" id="show-signatories">
         {% for result in visible_signatures %}
-        <div class="row extra-margin">
+        <div class="row extra-margin-half">
             <div class="col-md-4">
                 <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" ><span style="font-weight: bold">{{ result.name }}</span></a>
             </div>

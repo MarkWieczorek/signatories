@@ -1,14 +1,29 @@
 # Petition parameters
-ACTION_KIND = "Declaration" # "Petition", "Statement", "Letter of Support"
-ACTION_NAME = "Lorem Ipsum"
-ACTION_TEXT = """
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-in culpa qui officia deserunt mollit anim id est laborum.
-"""
+ACTION_KIND = "Statement" # "Petition", "Declaration", "Letter of Support"
+ACTION_NAME = "Signatories"
+ACTION_TEXT = '''
+<p>
+<u>Signatories</u> is a simple web-based program that allows a person to sign
+an online petition, a declaration, a statement, or any form of communication
+that requires community support. Designed for academics, signing is accomplished
+by authenticating with an account at <a href="https://orcid.org">ORCID</a>.
+</p>
+<p>
+The signatory may choose to remain anonymous. They may choose to add
+their professional affiliation. After signing, they can modify their
+signing preferences or remove their signature altogether. When the signatory's
+name is visible, any user may click on it to inspect their ORCID profile.
+</p>
+<p>
+By requiring an account at ORCID to sign, not only are bogus signatures
+avoided, but this helps to limit participants to the academic community. An
+ORCID account may sign at most once, and anonymous participants are assured to
+have an ORCID account.
+</p>
+<p>
+To see how it works, sign this statement by clicking the link below!
+</p>
+'''
 SORT_ALPHABETICAL = false
 
 # Display image at top of page

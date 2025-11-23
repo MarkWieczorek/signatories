@@ -44,9 +44,6 @@
 {% endblock %}
 {% block content %}
 
-<div class="row" id="nav">
-    <a class="btn btn-primary btn-sm" href="{{ logout_uri }}">Log out</a>
-</div>
 <p></p>
 <div class="row">
     <div class="row col-md-12">
@@ -54,11 +51,15 @@
         <h4>{{ orcid_id }}</h4>
     </div>
 </div>
+<div class="row" id="nav">
+    <a class="btn btn-primary btn-sm" href="{{ logout_uri }}">Log out</a>
+</div>
 
 <!-- Introduction -->
-<div class="row extra-margin">
+<div class="row sign">
+    <h3>Sign the {{ action_kind }}</h3>
     <p>
-        Please choose whether you would like your name to appear in the signatory list or if you would instead wish to remain anonymous. If you would like to add your professional affiliation (optional), enter it in the text box. You may update these choices at any time.
+        Please choose whether you would like your name to appear in the signatory list or if you would like to remain anonymous. You may add your professional affiliation (optional) in the text box below. These choices may be updated at any time.
     </p>
 
     <form action="/user" method="POST" id="update_info">
@@ -70,12 +71,10 @@
             <label for="anonymous">I would like to remain anonymous</label><br>
         </div>
         <div class="row col-md-8">
-
             <input type="text" class="form-control" name="affiliation" placeholder="Affiliation (optional)" value="{{ affiliation }}">
         </div>
-        <!-- Column 2: submit button -->
         <div class="col-md-2">
-            <button type="submit" class="btn btn-success">Sign the {{ action_kind }}</button>
+            <button type="submit" class="btn btn-success">Sign</button>
         </div>
     </form>
 
@@ -83,8 +82,7 @@
 
 
 {% if in_database is true %}
-<div class="row extra-margin"></div>
-<div class="row">
+<div class="row remove">
     <h3>Remove my signature</h3>
     <p>
     If you wish to remove your signature and delete all your data related to this {{ action_kind | lower }}, type "yes" in the input box below.

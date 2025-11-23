@@ -1,17 +1,19 @@
 # About
 
-**Signatories** is a simply python based program that allows a person to sign
-an online petition using an account at [ORCID](https://orcid.org). The signatory
-may choose to remain anonymous, and they may choose (optionally) to add their
-affiliation to their signature. The signatory may change their signing preferences,
-or remove their signature and personal data at any time. When the signatory's name
-is visible, any user may click on it to inspect their ORCID profile.
+**Signatories** is a simple web-based program that allows a person to sign
+an online petition, a declaration, a statement, or any form of communication
+that requires community support. Designed for academics, signing is accomplished
+by authenticating with an account at [ORCID](https://orcid.org).
 
-By requiring the signatory to authenticate with their ORCID account, each ORCID
-account can sign a petition at most once. By requiring an account at ORCID,
-this code not only helps to avoid bogus signatures, but also helps to limit
-participants to the scientific community (who all should already have an account
-at ORCID). It also ensures that anonymous participants have an active ORCID account.
+The signatory may choose to remain anonymous. They may choose to add
+their professional affiliation. After signing, they can modify their
+signing preferences or remove their signature altogether. When the signatory's
+name is visible, any user may click on it to inspect their ORCID profile.
+
+By requiring an account at ORCID to sign, not only are bogus signatures
+avoided, but this helps to limit participants to the academic community. An
+ORCID account may sign at most once, and anonymous participants are assured to
+have an ORCID account.
 
 This code is based on the Planetary Research
 [Reviewer expertise database](https://review.planetary-research.org), which is
@@ -36,7 +38,7 @@ Copy the file `.env.sample` to `.env`, which should look like the following:
 
 ```txt
 cookie_secret = '...'  # Random string to cross-check the stored cookie. Any string will do.
-database_name = 'reviewers.db'  # Name of the reviewer database file
+database_name = 'signatories.db'  # Name of the database file
 
 # ORCID API credentials
 client_ID = 'APP-ABCDEFGHIJKLMNOP'
@@ -73,7 +75,7 @@ python app.py
 
 ## System service
 
-To have the application start automatically when the system reboots, create a file `/etc/systemd/system/reviewdb.service` with the following contents:
+To have the application start automatically when the system reboots, create a file `/etc/systemd/system/signatories.service` with the following contents:
 
 ```
 [Unit]
@@ -92,7 +94,7 @@ WantedBy=multi-user.target
 and then run the following at the command line
 ```
 systemctl daemon-reload
-service signatories enable
+systemctl enable signatories
 service signatories start
 ```
 
