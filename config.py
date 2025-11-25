@@ -28,6 +28,9 @@ else:
     orcid_member = False
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+campaigndir = os.path.join(basedir, "campaigns")
 dbdir = os.path.join(basedir, "db")
+
 dbname = os.getenv("database_name")
-db_URI = "sqlite:////" + os.path.abspath(os.path.join(dbdir, dbname))
+dbpath = os.path.abspath(os.path.join(dbdir, dbname))
+db_URI = "sqlite:////" + dbpath

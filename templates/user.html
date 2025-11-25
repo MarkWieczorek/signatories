@@ -62,7 +62,7 @@
         Please choose whether you would like your name to appear in the signatory list or if you would like to remain anonymous. You may add your professional affiliation (optional) in the text box below. These choices may be updated at any time.
     </p>
 
-    <form action="/user" method="POST" id="update_info">
+    <form action="{{ user_uri }}" method="POST" id="update_info">
         <input type="hidden" name="mode" value="update_info">
         <div class="extra-margin">
             <input type="radio" id="named" name="anonymous" value="False" required {% if anonymous is false %}checked{% endif %}>
@@ -88,7 +88,7 @@
     If you wish to remove your signature and delete all your data related to this {{ action_kind | lower }}, type "yes" in the input box below.
     </p>
 
-    <form action="/user" method="POST" id="delete_account">
+    <form action="{{ user_uri }}" method="POST" id="delete_account">
         <!-- Column 1: input box -->
         <div class="row col-md-8">
             <input type="hidden" name="mode" value="delete">

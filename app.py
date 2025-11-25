@@ -16,13 +16,14 @@ app = Flask(__name__)
 
 
 """ App configuration """
+
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_DATABASE_URI = config.db_URI
 
 app.config["SECRET_KEY"] = config.cookie_secret
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=7)
 app.config.from_object(__name__)
-app.config.from_file("signatories.toml", load=tomllib.load, text=False)
+app.config.from_file(os.path.join(config.campaigndir, "signatories.toml"), load=tomllib.load, text=False)
 
 """ Database """
 db.init_app(app)
@@ -40,9 +41,11 @@ else:
 
 """ Default URLs """
 
-logout_URI = "/logout"
-user_URI = "/user"
-thank_you_URI = "/thank-you"
+action_slug = app.config["ACTION_SLUG"]
+
+logout_URI = os.path.join("/", action_slug, "logout")
+user_URI = os.path.join("/", action_slug, "user")
+thank_you_URI = os.path.join("/", action_slug, "thank-you")
 privacy_URI = "/privacy"
 
 base_data = {
@@ -52,6 +55,7 @@ base_data = {
     "thank_you_uri": thank_you_URI,
     "action_kind": app.config["ACTION_KIND"],
     "action_name": app.config["ACTION_NAME"],
+    "action_short_description": app.config["ACTION_SHORT_DESCRIPTION"],
     "action_text": app.config["ACTION_TEXT"],
     "sort_alphabetical": app.config["SORT_ALPHABETICAL"],
     "footer_url_name": app.config["FOOTER_URL_NAME"],

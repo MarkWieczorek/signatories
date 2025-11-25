@@ -38,7 +38,7 @@ Copy the file `.env.sample` to `.env`, which should look like the following:
 
 ```txt
 cookie_secret = '...'  # Random string to cross-check the stored cookie. Any string will do.
-database_name = 'signatories.db'  # Name of the database file
+database_name = 'signatories.db'
 
 # ORCID API credentials
 client_ID = 'APP-ABCDEFGHIJKLMNOP'
