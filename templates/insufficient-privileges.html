@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Insufficient privileges{% endblock %}
+
+{% block content %}
+
+<!-- Introduction -->
+<div class="thank-you-text main-text">
+    <p>
+    You do not have sufficient privileges to access the adminisration settings.
+    </p>
+    <p>
+    If you would like to create a new campaign, please contact the site
+    administrator and provide them with your ORCID iD.
+  </p>
+    <div class="return-to-signatories">
+        <a class="btn btn-primary btn-md" href="{{ home_uri }}">Return to the home page</a>
+    </div>
+</div>
+
+
+{% endblock %}
