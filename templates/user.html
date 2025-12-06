@@ -3,6 +3,11 @@
 {{ super() }}
 {% endblock %}
 {% block title %}Sign{% endblock %}
+
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
 {% block alert %}
 
 {% if alert.info is not none %}

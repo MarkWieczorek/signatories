@@ -120,6 +120,7 @@ base_data = {
         scope="/authenticate",
         redirect_uri=config.code_callback_URI + "-admin"),
     "redirect_alerts": None,
+    "role_id": 0,
 }
 
 base_alerts = {
@@ -142,12 +143,23 @@ def favicon():
 
 @app.route(home_URI)
 def home():
+    if session.get("orcid") is None:
+        role_id = 0
+    else:
+        result = Admin.query.filter_by(orcid=session["orcid"]).first()
+        if result is None:
+            role_id = 0
+        else:
+            role_id = result.role_id
+
     campaign_list = dict()
     # Create list of signatory campaigns
     for row in Campaign.query.filter_by(is_active=True).all():
         campaign_list[row.action_slug] = [row.action_name, row.action_short_description]
     data = {
         "campaigns": campaign_list,
+        "page": "home",
+        "role_id": role_id,
     }
     base_data["user_URI_defined"] = None
     base_data["thank_you_URI_defined"] = None
@@ -158,6 +170,15 @@ def home():
 
 @app.route(action_URI)
 def action(slug):
+    if session.get("orcid") is None:
+        role_id = 0
+    else:
+        result = Admin.query.filter_by(orcid=session["orcid"]).first()
+        if result is None:
+            role_id = 0
+        else:
+            role_id = result.role_id
+
     # Get the ORCID authentication URI
     URI = api.get_login_url(scope="/authenticate", redirect_uri=config.code_callback_URI)
 
@@ -187,6 +208,7 @@ def action(slug):
         "anonymous_signatures": anonymous_signatures,
         "visible_signatures": visible_signatures,
         "is_active": action_data.is_active,
+        "role_id": role_id,
     }
     base_data["user_URI_defined"] = "/" + slug + "/user"
     base_data["thank_you_URI_defined"] = "/" + slug + "/thank-you"
@@ -244,16 +266,31 @@ def authorize_admin():
 
 @app.route(privacy_URI)
 def privacy():
-    data = {}
-    data.update(base_data)
-    return render_template("privacy.html", **data)
+    if session.get("orcid") is None:
+        return redirect(home_URI)
+    else:
+        result = Admin.query.filter_by(orcid=session["orcid"]).first()
+        if result is None:
+            role_id = 0
+        else:
+            role_id = result.role_id
+
+    data = {
+        "role_id": role_id,
+    }
+    return render_template("privacy.html", **(base_data |data))
 
 
 @app.route(user_URI, methods=["POST", "GET"])
 def user(slug):
-    # Check if the user is logged in
     if session.get("orcid") is None:
         return redirect(home_URI)
+    else:
+        result = Admin.query.filter_by(orcid=session["orcid"]).first()
+        if result is None:
+            role_id = 0
+        else:
+            role_id = result.role_id
 
     user = User.query.filter_by(orcid=session["orcid"], campaign=slug).first()
     action_data = Campaign.query.filter_by(action_slug=slug).first()
@@ -329,6 +366,7 @@ def user(slug):
         "orcid_id": session["orcid"],
         "alert": alerts,
         "in_database": in_database,
+        "role_id": role_id,
     }
 
     return render_template("user.html", **(base_data | data))
@@ -680,17 +718,23 @@ def edit(slug):
 
 @app.route(thank_you_URI)
 def thank_you(slug):
+    if session.get("orcid") is None:
+        return redirect(home_URI)
+    else:
+        result = Admin.query.filter_by(orcid=session["orcid"]).first()
+        if result is None:
+            role_id = 0
+        else:
+            role_id = result.role_id
+
     action_data = Campaign.query.filter_by(action_slug=slug).first()
 
-    # If a user session exists, close it
-    if session.get("orcid") is not None:
-        session.pop("name", None)
-        session.pop("orcid", None)
     data = {
         "action_kind": action_data.action_kind,
         "action_name": action_data.action_name,
         "action_short_description": action_data.action_short_description,
         "action_path": "/" + action_data.action_slug,
+        "role_id": role_id,
     }
     base_data["user_URI_defined"] = None
     base_data["thank_you_URI_defined"] = None
@@ -701,17 +745,23 @@ def thank_you(slug):
 
 @app.route(signature_removed_URI)
 def signature_removed(slug):
+    if session.get("orcid") is None:
+        return redirect(home_URI)
+    else:
+        result = Admin.query.filter_by(orcid=session["orcid"]).first()
+        if result is None:
+            role_id = 0
+        else:
+            role_id = result.role_id
+
     action_data = Campaign.query.filter_by(action_slug=slug).first()
 
-    # If a user session exists, close it
-    if session.get("orcid") is not None:
-        session.pop("name", None)
-        session.pop("orcid", None)
     data = {
         "action_kind": action_data.action_kind,
         "action_name": action_data.action_name,
         "action_short_description": action_data.action_short_description,
         "action_path": "/" + action_data.action_slug,
+        "role_id": role_id,
     }
     base_data["user_URI_defined"] = None
     base_data["thank_you_URI_defined"] = None
