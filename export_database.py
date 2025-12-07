@@ -18,7 +18,7 @@ with app.app_context():
             f.write(f"{user.orcid}, {user.name}, {user.role_id}\n")
 
     with open(campaigns_file, "w") as f:
-        f.write("Slug, ORCID Ownder, Kind, Name, Short Description, Text, Sort alphabetical, Allow anonymous, Creation date\n")
+        f.write("Slug, ORCID Ownder, Kind, Name, Short Description, Text, Sort alphabetical, Allow anonymous, Is active, Creation date\n")
         for campaign in Campaign.query.all():
             f.write(
                 f"{campaign.action_slug}, \
@@ -29,5 +29,6 @@ with app.app_context():
                 {campaign.action_text}, \
                 {campaign.sort_alphabetical}, \
                 {campaign.allow_anonymous}, \
+                {campaign.is_active}, \
                 {campaign.creation_date}\n"
             )

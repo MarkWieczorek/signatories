@@ -28,6 +28,7 @@ class Admin(db.Model):
 class Campaign(db.Model):
     action_slug = db.Column(db.String, nullable=False, primary_key=True)
     owner_orcid = db.Column(db.String(length=19), default='')
+    owner_name = db.Column(db.String, default='')
     action_kind = db.Column(db.String, nullable=False)
     action_name = db.Column(db.String, nullable=False)
     action_short_description = db.Column(db.String, default='')
@@ -36,6 +37,7 @@ class Campaign(db.Model):
     allow_anonymous = db.Column(db.Boolean, nullable=False, default=True)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
     creation_date = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now(datetime.UTC))
+    closed_date = db.Column(db.DateTime, default=None)
 
     def __repr__(self):
         return "<Campaign %s>" % self.action_slug

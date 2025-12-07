@@ -60,14 +60,17 @@ a {
 }
 
 a.external {
-  color: #00B7FF;
+  color: #0099BB;
   text-decoration: none;
 }
 a.external:hover {
-  color: #00B7FF;
+  color: #0099BB;
   text-decoration: underline;
 }
 
+div.main-text {
+  margin-bottom: 4em;
+}
 .main-text p {
   margin-bottom: 0.8em;
 }
@@ -160,7 +163,7 @@ p.campaign-entries {
 }
 
 .create-item-top {
-  margin-top: 4em;
+  margin-top: 2em;
   margin-bottom: 2em;
 }
 .create-item-middle {
@@ -209,11 +212,11 @@ p.campaign-entries {
 }
 
 .action_text a {
-  color: #00B7FF;
+  color: #0099BB;
   text-decoration: none;
 }
 .action_text a:hover {
-  color: #00B7FF;
+  color: #0099BB;
   text-decoration: underline;
 }
 

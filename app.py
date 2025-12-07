@@ -1,5 +1,6 @@
 import os
 import re
+import datetime
 from datetime import timedelta
 import tomllib
 from flask import Flask
@@ -106,6 +107,9 @@ base_data = {
     "admin_uri": admin_URI,
     "create_uri": create_URI,
     "editor_uri": editor_URI,
+    "user_URI_defined": None,
+    "thank_you_URI_defined": None,
+    "signature_removed_URI_defined": None,
     "action_kind": config.action_kind,
     "action_name": config.action_name,
     "action_path": config.action_path,
@@ -143,6 +147,7 @@ def favicon():
 
 @app.route(home_URI)
 def home():
+    # Home page
     if session.get("orcid") is None:
         role_id = 0
     else:
@@ -170,6 +175,7 @@ def home():
 
 @app.route(action_URI)
 def action(slug):
+    # Show the campaign
     if session.get("orcid") is None:
         role_id = 0
     else:
@@ -203,6 +209,8 @@ def action(slug):
         "action_short_description": action_data.action_short_description,
         "action_text": action_data.action_text,
         "action_path": "/" + action_data.action_slug,
+        "action_created": action_data.creation_date,
+        "action_closed": action_data.closed_date,
         "authorization_uri": URI,
         "total_signatures": total_signatures,
         "anonymous_signatures": anonymous_signatures,
@@ -266,8 +274,9 @@ def authorize_admin():
 
 @app.route(privacy_URI)
 def privacy():
+    # Show the privacy page
     if session.get("orcid") is None:
-        return redirect(home_URI)
+        role_id = 0
     else:
         result = Admin.query.filter_by(orcid=session["orcid"]).first()
         if result is None:
@@ -278,11 +287,12 @@ def privacy():
     data = {
         "role_id": role_id,
     }
-    return render_template("privacy.html", **(base_data |data))
+    return render_template("privacy.html", **(base_data | data))
 
 
 @app.route(user_URI, methods=["POST", "GET"])
 def user(slug):
+    # Show the page allowing a logged in user to sign a campaign
     if session.get("orcid") is None:
         return redirect(home_URI)
     else:
@@ -329,7 +339,7 @@ def user(slug):
         # Delete all user data
         if request.form.get("mode") == "delete":
             # Check the confirmation option
-            if request.form["confirmation"].lower() == "yes":
+            if request.form["confirmation"].lower() == "delete":
                 # Delete user account
                 Signatory.query.filter_by(orcid=session["orcid"], campaign=slug).delete()
                 # Commit to database
@@ -337,7 +347,7 @@ def user(slug):
                 # Logout
                 return redirect(base_data["signature_removed_URI_defined"])
             else:
-                alerts["info"] = "Please confirm your response with \"yes\""
+                alerts["danger"] = "Please confirm your response with \"delete\""
 
     if user is not None:
         in_database = True
@@ -374,6 +384,8 @@ def user(slug):
 
 @app.route(admin_URI, methods=["POST", "GET"])
 def admin():
+    # Show the admin page
+
     # Check if the user is logged in
     if session.get("orcid") is None:
         print("User session not set")
@@ -429,7 +441,7 @@ def admin():
                 elif role_id > 1:
                     # Modify role ID
                     if user.role_id == role_id:
-                        alerts["success"] = "User role did not need to be modified."
+                        alerts["info"] = "User role did not need to be modified."
                     else:
                         user.role_id = role_id
                         alerts["success"] = "User role modified."
@@ -468,6 +480,8 @@ def admin():
 
 @app.route(create_URI, methods=["POST", "GET"])
 def create():
+    # Show the page to create a campaign
+
     # Check if the user is logged in
     if session.get("orcid") is None:
         print("User session not set")
@@ -519,6 +533,7 @@ def create():
                 sort_alphabetical=sort_alphabetical,
                 allow_anonymous=allow_anonymous,
                 owner_orcid=session["orcid"],
+                owner_name=session["name"],
             )
 
             if Campaign.query.filter_by(action_slug=action_slug).first() is not None:
@@ -558,6 +573,8 @@ def create():
 
 @app.route(editor_URI)
 def editor():
+    # Show the editor page with their list of campaigns
+
     # Check if the user is logged in
     if session.get("orcid") is None:
         print("User session not set")
@@ -586,11 +603,11 @@ def editor():
     # Create list of signatory campaigns
     for row in Campaign.query.order_by(Campaign.action_name.asc()).all():
         if row.owner_orcid == session["orcid"]:
-            my_campaigns[row.action_slug] = [row.action_name, row.action_short_description]
+            my_campaigns[row.action_slug] = [row.action_name, row.action_short_description, row.is_active]
 
     if user.role_id == 3:
         for row in Campaign.query.order_by(Campaign.action_name.asc()).all():
-            all_campaigns[row.action_slug] = [row.action_name, row.action_short_description]
+            all_campaigns[row.action_slug] = [row.action_name, row.action_short_description, row.is_active]
 
     data = {
         "action_name": session["name"],
@@ -610,6 +627,8 @@ def editor():
 
 @app.route(edit_URI, methods=["POST", "GET"])
 def edit(slug):
+    # Show the page to edit a specific campaign
+
     # Check if the user is logged in
     if session.get("orcid") is None:
         print("User session not set")
@@ -632,7 +651,7 @@ def edit(slug):
 
     # For editors, check if the user is the campaign owner
     if user.role_id == 2:
-        if edit_campaign.orcid_owner != session["orcid"]:
+        if edit_campaign.owner_orcid != session["orcid"]:
             print("Insufficient permissions to edit this action")
             return redirect(insufficient_privileges_URI)
 
@@ -671,8 +690,10 @@ def edit(slug):
         if request.form.get("mode") == "close_activate":
             if request.form["is_active"] == "Active":
                 is_active = True
+                edit_campaign.closed_date = None
             else:
                 is_active = False
+                edit_campaign.closed_date = datetime.datetime.now(datetime.UTC)
 
             edit_campaign.is_active = is_active
             db.session.commit()
@@ -691,11 +712,16 @@ def edit(slug):
                 Campaign.query.filter_by(action_slug=slug).delete()
                 Signatory.query.filter_by(campaign=slug).delete()
                 db.session.commit()
+                base_data["redirect_alerts"] = {
+                    "success": "Campaign deleted.",
+                    "danger": None,
+                    "info": None,
+                    "warning": None,
+                }
                 return redirect(editor_URI)
             else:
-                alerts["info"] = "Please confirm your response with \"delete\"."
+                alerts["danger"] = "Please confirm your response with \"delete\"."
             db.session.commit()
-            return redirect(editor_URI)
 
     data = {
         "action_name": session["name"],
@@ -704,6 +730,9 @@ def edit(slug):
         "name": session["name"],
         "orcid_id": session["orcid"],
         "role_id": user.role_id,
+        "owner_orcid": edit_campaign.owner_orcid,
+        "owner_name": edit_campaign.owner_name,
+        "creation_date": edit_campaign.creation_date,
         "alert": alerts,
         "page": 'editor',
         "form_kind": edit_campaign.action_kind,
@@ -720,6 +749,7 @@ def edit(slug):
 
 @app.route(thank_you_URI)
 def thank_you(slug):
+    # Show page thanking the user for signing the campaign
     if session.get("orcid") is None:
         return redirect(home_URI)
     else:
@@ -741,12 +771,18 @@ def thank_you(slug):
     base_data["user_URI_defined"] = None
     base_data["thank_you_URI_defined"] = None
     base_data["signature_removed_URI_defined"] = None
+
+    # If a user session exists, close it (if admin, do nothing)
+    if role_id == 0:
+        session.pop("name", None)
+        session.pop("orcid", None)
 
     return render_template("thank-you.html", **(base_data | data))
 
 
 @app.route(signature_removed_URI)
 def signature_removed(slug):
+    # Show page confirming that the user signature was removed
     if session.get("orcid") is None:
         return redirect(home_URI)
     else:
@@ -768,6 +804,11 @@ def signature_removed(slug):
     base_data["user_URI_defined"] = None
     base_data["thank_you_URI_defined"] = None
     base_data["signature_removed_URI_defined"] = None
+
+    # If a user session exists, close it (if admin, do nothing)
+    if role_id == 0:
+        session.pop("name", None)
+        session.pop("orcid", None)
 
     return render_template("signature-removed.html", **(base_data | data))
 

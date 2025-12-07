@@ -29,6 +29,15 @@
     </div>
     {% endif %}
 
+    <div>
+      <p>
+        Created: {{ action_created.date() }}
+        {% if action_closed is not none %}
+        <br />Closed: {{ action_closed.date() }}
+        {% endif %}
+        <p>
+    </div>
+
     <div class="toggle-signatories">
         <p>Total signatories: {{ total_signatures }}</p>
     </div>
