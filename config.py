@@ -18,7 +18,7 @@ else:
     orcid_url = "https://sandbox.orcid.org/"
     signatories_url = '/'
 
-# Load secrets from .env file
+# Load ORCID and admin parameters from .env file
 cookie_secret = os.getenv("cookie_secret")
 client_ID = os.getenv("client_ID")
 client_secret = os.getenv("client_secret")
@@ -45,9 +45,17 @@ action_short_description = "Open source signing of statements and petitions"
 action_kind = "Introduction"
 action_path = "/"
 favicon = os.getenv("favicon")
+if os.getenv("show_examples").lower() == "true":
+    show_examples = True
+else:
+    show_examples = False
+
 
 # Default parameters for the footer
 footer_url_name = os.getenv("footer_url_name")
 footer_url = os.getenv("footer_url")
-thank_prc = os.getenv("thank_prc")
+if os.getenv("thank_prc").lower() == "true":
+    thank_prc = True
+else:
+    thank_prc = False
 contact_email = os.getenv("contact_email")

@@ -55,6 +55,9 @@ favicon = "favicon.ico"
 footer_url_name = "My-Organization"
 footer_url = "https://my.organization.example.org/"
 
+# Show the two example petitions
+show_examples = True
+
 # Add a statement in the footer that states Signatories was created by the Planetary Research Cooperative
 thank_prc = false
 

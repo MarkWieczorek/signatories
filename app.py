@@ -117,6 +117,7 @@ base_data = {
     "signatories_url": config.signatories_url,
     "footer_url_name": config.footer_url_name,
     "footer_url": config.footer_url,
+    "show_examples": config.show_examples,
     "thank_prc": config.thank_prc,
     "contact_email": config.contact_email,
     "orcid_url": config.orcid_url,
@@ -142,7 +143,7 @@ base_alerts = {
 def favicon():
     return send_from_directory(
         os.path.join(app.root_path, 'static/img'),
-        app.config["favicon"], mimetype='image/vnd.microsoft.icon')
+        config["favicon"], mimetype='image/vnd.microsoft.icon')
 
 
 @app.route(home_URI)
