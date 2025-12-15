@@ -43,7 +43,7 @@ Copy the file `.env.sample` to `.env`, which should look like the following:
 
 ```txt
 cookie_secret = '...'  # Random string to cross-check the stored cookie. Any string will do.
-port = 3000
+port = 3000  # port used by the web server when in sandbox mode
 
 # Orcid ID of the site admin that is added to the database at creation
 admin_orcid = 'xxxx-xxxx-xxxx-xxxx'

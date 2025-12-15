@@ -52,7 +52,7 @@ if not os.path.exists(config.dbpath):
         db.session.add(admin)
         db.session.commit()
 
-        for role_name in ("Delete", "Editor", "Administrator"):
+        for role_name in ("User", "Editor", "Administrator"):
             role = UserRole(name=role_name)
             db.session.add(role)
 
@@ -429,8 +429,8 @@ def admin():
         return redirect(insufficient_privileges_URI)
 
     role = UserRole.query.filter_by(role_id=user.role_id).first()
-    user_roles = UserRole.query.all()
-
+    modify_options = [[1, "Remove"], [2, "Editor"], [3, "Administrator"]]
+    delete_options = [[1, "Delete"]]  # [2, "Ban"]
     alerts = base_alerts.copy()
 
     # If an update is pushed
@@ -445,10 +445,10 @@ def admin():
 
             # Check if we are not accidently changing self
             if user_id == session["orcid"]:
-                alerts["danger"] = "You cannot modify yourself"
+                alerts["danger"] = "You cannot modify yourself."
             # Check if the ORCID is valid (4 groups of 4 digits)
             elif (re.match(r"\d{4}-\d{4}-\d{4}-\d{3}[0-9|xX]", user_id.strip()) is None) or not checksum(user_id.strip()):
-                alerts["danger"] = "Invalid ORCID iD"
+                alerts["danger"] = "Invalid ORCID."
             # All good
             else:
                 # Try to get user from DB
@@ -477,6 +477,41 @@ def admin():
 
                 db.session.commit()
 
+        # Delete or ban user
+        if request.form.get("mode") == "delete_ban_user":
+            # Get the user's ORCID
+            user_id = escape(request.form["user_id"])
+            # Get the desired user role
+            user_option = int(request.form["user_option"])
+
+            # Check if we are not accidently changing self
+            if user_id == session["orcid"]:
+                alerts["danger"] = "You cannot delete your own signatures."
+            # Check if the ORCID is valid (4 groups of 4 digits)
+            elif (re.match(r"\d{4}-\d{4}-\d{4}-\d{3}[0-9|xX]", user_id.strip()) is None) or not checksum(user_id.strip()):
+                alerts["danger"] = "Invalid ORCID."
+            # All good
+            else:
+                # See if user is in the admin database
+                user = Admin.query.filter_by(orcid=user_id).first()
+                if user is not None:
+                    alerts["danger"] = "Can not delete or ban users with administrator roles."
+                else:
+                    result = Signatory.query.filter_by(orcid=user_id).all()
+                    num_deleted = len(result)
+                    if num_deleted > 0:
+                        Signatory.query.filter_by(orcid=user_id).delete()
+                        db.session.commit()
+                        if num_deleted == 1:
+                            alerts["success"] = f"Deleted {num_deleted} signature associated with ORCID {user_id}."
+                        else:
+                            alerts["success"] = f"Deleted {num_deleted} signatures associated with ORCID {user_id}."
+
+                    else:
+                        alerts["info"] = f"No signatures to delete for ORCID {user_id}."
+
+                    # if user_option == 2: ## Add user to ban list
+
         # Download database file
         if request.form.get("mode") == "backup_db":
             return send_file(config.dbpath, as_attachment=True)
@@ -493,7 +528,8 @@ def admin():
         "orcid_id": session["orcid"],
         "role": role.name.capitalize(),
         "role_id": role.role_id,
-        "user_roles": user_roles,
+        "modify_options": modify_options,
+        "delete_options": delete_options,
         "alert": alerts,
         "editors": editors,
         "admins": admins,
