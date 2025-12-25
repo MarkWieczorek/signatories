@@ -16,7 +16,7 @@
 
     {% include "controls.html" %}
 
-    <title>{% block title %}{% endblock %} - {{ action_name }}</title>
+    <title>{% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
 
@@ -25,8 +25,8 @@
     <header>
         <div class="header">
             <div class="container">
-                <h1><a href={{ action_path }}>{{ action_name | safe }}</a></h1>
-                <h3 class="short">{{ action_short_description | safe }}</h3>
+                <h1><a href="{{ header_path }}">{{ header_title | safe }}</a></h1>
+                <h3 class="short">{{ header_subtitle | safe }}</h3>
            </div>
         </div>
     </header>
@@ -63,7 +63,7 @@
                     </p>
                   </td>
                   <td style="text-align: left; vertical-align: top;">
-                    <p class="footer-small"><a href="{{ signatories_url }}">Home</a></p>
+                    <p class="footer-small"><a href="{{ header_path }}">Home</a></p>
                     <p class="footer-small"><a href="{{ faq_uri }}">FAQ</a></p>
                     <p class="footer-small"><a href="{{ privacy_uri }}">Privacy Policy</a></p>
                     <p class="footer-small"><a href="{{ authorization_uri_admin }}">Administer</a></p>
