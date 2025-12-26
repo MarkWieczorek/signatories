@@ -97,6 +97,7 @@ create_URI = os.path.join(config.site_path, "create")
 editor_URI = os.path.join(config.site_path, "editor")
 edit_URI = os.path.join(config.site_path, "<slug>", "edit")
 
+action_template = "action-with-sidebar.html"  # default template for actions
 
 base_data = {
     "home_uri": home_URI,
@@ -228,9 +229,10 @@ def action(slug):
 
     data = {
         "header_title": action_data.action_name,
-        "header_subtitle": action_data.action_short_description,
+        "header_subtitle": action_data.action_kind.upper(),
         "header_path": os.path.join(config.site_path, slug),
         "action_kind": action_data.action_kind,
+        "text_header": action_data.action_short_description,
         "action_text": action_data.action_text,
         "action_created": action_data.creation_date,
         "action_closed": action_data.closed_date,
@@ -245,7 +247,7 @@ def action(slug):
     base_data["thank_you_URI_defined"] = os.path.join(config.site_path, slug, "thank-you")
     base_data["signature_removed_URI_defined"] = os.path.join(config.site_path, slug, "signature-removed")
 
-    return render_template("action.html", **(base_data | data))
+    return render_template(action_template, **(base_data | data))
 
 
 @app.route("/authorization-code-callback", methods=["GET"])
