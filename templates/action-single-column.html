@@ -36,7 +36,9 @@
   <br />Closed: {{ action_closed.date() }}
   {% endif %}
 </p>
-
+<p>
+  Allow anonymous: {% if allow_anonymous is true %}Yes{% else %}No{% endif %}
+</p>
 
 <div>
     <p>Total signatories: {{ total_signatures }}</p>
