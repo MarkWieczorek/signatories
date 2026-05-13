@@ -32,11 +32,14 @@
 
             <div class="sidebar-signatories">
                 <p>
-                    Signatories: {{ total_signatures }}
+                    Signatories:
                 </p>
             </div>
+            <div class="sidebar-number">
+                <p>{{ total_signatures }}</p>
+            </div>
 
-            <div class="sidebar-text">
+            <div class="sidebar-metadata">
                 <p>
                     Created: {{ action_created.date() }}
                 </p>
@@ -50,7 +53,7 @@
                 </p>
 
                 <form action="{{ download_uri }}" method="POST" id="download-ods">
-                    <p><button type="submit" name="mode" value="download-ods" class="btn btn-link link" style="padding:0; border: 0;">Download signatories</button></p>
+                    <p><button type="submit" name="mode" value="download-ods" class="btn btn-link link" style="padding:0; border: 0; font-size: 1em; line-height:0em;">Download signatories</button></p>
                 </form>
             </div>
         </td>

@@ -109,9 +109,19 @@ main .sidebar-text {
   line-height: 1em;
   padding-bottom: 1.5em;
 }
+main .sidebar-number {
+  margin-top: 0.5em;
+  font-size: 3em;
+  margin-bottom: 1em;
+}
 main .sidebar-signatories {
   margin-top: 2.5em;
   font-size: 0.8em;
+}
+main .sidebar-metadata {
+  color: #666;
+  font-size: 0.7em;
+  line-height: 1em;
 }
 main .link {
   color: #007799;
