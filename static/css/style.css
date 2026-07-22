@@ -20,7 +20,7 @@ body {
 }
 
 header {
-  background-color: #005066;
+  background-color: #3b4477;
   width: 100%;
   margin-left: 0;
   margin-right: 0;
@@ -84,6 +84,12 @@ footer .footer-small {
   font-size: 0.9em;
   margin-bottom: 0.3em;
 }
+footer .footer-thanks {
+  font-size: 0.7em;
+  margin-bottom: 0.3em;
+  padding-top: 0em;
+  line-height: 0.5em;
+}
 footer .social {
   margin-top: 1em;
   margin-bottom: 0.3em;
@@ -114,23 +120,44 @@ main a:hover {
 main p {
   margin-bottom: 0.8em;
 }
-main .campaign-list {
-  margin-bottom: 0em;
-  margin-top: 0em;
+main p.divider {
+   margin-top: 2.5em;
+   padding-bottom: 0em;
 }
-main .campaign-list hr {
-  border: none;
-  height: 1px;
-  background-color: #ccc;
+main .action-list-header {
+  color: #666;
+  margin-top: 1em;
+  margin-bottom: 1em;
+
+}
+main .campaign-card {
   margin-bottom: 0.6em;
-  margin-top: 1.1em;
+  padding: 1em 1.2em 0.5em 1.5em;
+  border: 1px solid #ccc;
+  border-radius: 0.3em;
+  background-color: #fcfcfc;
+}
+main a:hover .campaign-card {
+  background-color: #f4f4f4;
+}
+main .campaign-card-table {
+  margin-bottom: 0em;
+  margin-top: 1.2em;
+}
+main .campaign-card-table td {
+  vertical-align: top;
+}
+main .campaign-list {
+  margin-bottom: 3em;
+  margin-top: 0em;
 }
 main p.campaign-entries {
   margin-left: 0em;
   margin-right: 1em;
   margin-bottom: 0.5em;
   margin-top: 0;
-  font-size: 0.9em;
+  font-size: 1em;
+  color: #007799;
 }
 main p.campaign-metadata {
   margin-left: 0em;
@@ -138,14 +165,29 @@ main p.campaign-metadata {
   margin-bottom: 0.5em;
   color: #666;
   font-size: 0.8em;
-  line-height: 1em;
+  line-height: 1.3em;
 }
 main p.campaign-excerpt {
   margin-left: 0em;
   margin-right: 1em;
   margin-top: 1em;
   font-size: 0.8em;
-  line-height: 1.2em
+  line-height: 1.3em;
+}
+main .action-text h1 {
+  font-size: 1.4em;
+  margin-bottom: 0.8em;
+  margin-top: 0em;
+}
+main .action-text h2 {
+  font-size: 1.2em;
+  margin-bottom: 0.6em;
+  margin-top: 0.8em;
+}
+main .action-text h3 {
+  font-size: 1em;
+  margin-bottom: 0.4em;
+  margin-top: 0.8em;
 }
 main .orcid-text {
   color: #666;
@@ -239,7 +281,7 @@ main .remove {
   margin-top: 4em;
 }
 main .margin-before-content {
-  margin-top: 4em;
+  margin-top: 2em;
 }
 main .margin-before-edit {
   margin-top: 1.2em;
@@ -298,6 +340,27 @@ li[data-list="bullet"] {
   list-style-type: disc!important;
   padding-left: 0px;
 }
+main .ql-snow .ql-editor h1 {
+  font-size: 1.4em;
+}
+main .ql-snow .ql-editor h2 {
+  font-size: 1.2em;
+}
+main .ql-snow .ql-editor h3 {
+  font-size: 1em;
+}
+main .quill-editor h1 {
+  margin-bottom: 0.2em;
+  margin-top: 0em;
+}
+main .quill-editor h2 {
+  margin-bottom: 0em;
+  margin-top: 1.2em;
+}
+main .quill-editor h3 {
+  margin-bottom: 0em;
+  margin-top: 1em;
+}
 
 hr {
   border-top: 1px solid #000;
@@ -317,6 +380,7 @@ h2.orcid {
   margin-bottom: 0em;
 }
 h3 {
+  font-size: 1.4em;
   margin-top: 2em;
   margin-bottom: 1em;
 }

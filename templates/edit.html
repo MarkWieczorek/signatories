@@ -63,7 +63,7 @@
 
         <div>
             <p class="create-item">
-                Action kind (open letter, letter of support, statement, declaration, petition).
+                <span style="color: red">*</span> Action kind (open letter, letter of support, statement, declaration, petition).
                 Used as a subtitle in the header and in the button "Sign the ...".
             </p>
             <input type="text" class="form-control" name="action_kind" placeholder="" value="{{ form_kind }}">
@@ -71,14 +71,14 @@
 
         <div>
             <p class="create-item">
-                Action title: displayed in the page header
+                <span style="color: red">*</span> Action title: displayed in the page header
             </p>
             <input type="text" class="form-control" name="action_name" placeholder="" value="{{ form_name | safe }}">
         </div>
 
         <div>
             <p class="create-item">
-                Action subtitle: displayed above the main text in bold
+                Action subtitle: displayed above the main text in bold (may be left blank)
             </p>
             <input type="text" class="form-control" name="action_short_description" placeholder="" value="{{ form_short_description | safe }}">
         </div>
@@ -95,7 +95,7 @@
 
             <script>
                 const toolbarOptions = [
-                    [{ 'header': [1, 2, 3, 4, false] }],
+                    [{ 'header': [1, 2, 3, false] }],
                     ['bold', 'italic', 'underline', 'strike'],
                     ['link'],
                     ['blockquote'],

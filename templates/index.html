@@ -5,78 +5,99 @@
 
 {% block content %}
 <div>
-  <p>
-  Signatories is a simple web-based program that allows a person to sign
+  <p><i>
+  <b>Signatories</b> is a simple web-based application that allows a person to sign
   an open letter, a letter of support, an online petition, a statement, or a
   declaration. Designed for academics, signing is accomplished by authenticating
   with an Open Researcher and Contributor ID account
   (<a href="https://orcid.org" target="_blank">ORCID</a>).
-  </p>
-  <p>
+  </i></p>
+  <p><i>
   An ORCID account may sign a campaign at most once, and anonymous participants
   (when allowed) are assured to have an ORCID account. Signatories may choose to
   add their professional affiliation, and they can modify their preferences or
   remove their signature any time after signing. When a signatory's name is
   visible, any public visitor may click on it to inspect their ORCID profile.
-  </p>
-  <p>
-  If you would like editor privileges to create a campaign, please contact the
-  <a href="mailto:{{ contact_email }}">site administrator</a> and provide your
-  ORCID.
-  </p>
+  </i></p>
+  <p><i>
+  If you would like to create a campaign, please contact us by
+  <a href="mailto:{{ contact_email }}">email</a> and provide us with your ORCID iD.
+  </i></p>
 </div>
 
 {% if show_examples is true %}
 <div>
-    <h3>EXAMPLES</h3>
+  <center>
+    <p class="divider">*&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;*</p>
+    <h2 class="action-list-header"><b>Examples</b></h2>
+</center>
 </div>
 
 <div class="campaign-list">
     {% for name, desc in campaigns.items() %}
     {% if name == "demo" or name == "demo-no-anonymous" %}
-    <hr>
+    <a href="{{ desc[2] }}" style="text-decoration: none;">
+    <div class="campaign-card">
     <p class="campaign-entries">
-        <a href="{{ desc[2] }}"><b>{{ desc[0] | safe }}</b></a>
+        <b>{{ desc[0] | safe }}</b>
     </p>
-    <p class="campaign-metadata">
-      Created: {{ desc[3].date() }}
-    </p>
-    <p class="campaign-metadata">
-      Signatories: {{ desc[4] }}
-    </p>
-    <p class="campaign-excerpt">
-      {{ desc[1] | striptags() | safe | truncate(450) }}
-    </p>
+    <table class="campaign-card-table">
+      <tr>
+        <td style="width: 10em;">
+          <p class="campaign-metadata">
+            Created: {{ desc[3].date() }}<br />
+            Signatories: {{ desc[4] }}
+          </p>
+        </td>
+        <td>
+          <p class="campaign-metadata" style="color: #333;">
+            {{ desc[1] | striptags() | safe | truncate(450) }}
+          </p>
+        </td>
+      </tr>
+    </table>
+    </div>
+    </a>
     {% endif %}
     {% endfor %}
-    <hr>
 
 </div>
 {% endif %}
 
 <div>
-    <h3>ACTIVE CAMPAIGNS</h3>
+    <center>
+      <p class="divider">*&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;*</p>
+      <h2 class="action-list-header"><b>Active Campaigns</b></h2>
+  </center>
 </div>
 
 <div class="campaign-list">
     {% for name, desc in campaigns.items() %}
     {% if name != "demo" and name != "demo-no-anonymous" %}
-    <hr>
+    <a href="{{ desc[2] }}" style="text-decoration: none;">
+    <div class="campaign-card">
     <p class="campaign-entries">
-        <a href="{{ desc[2] }}"><b>{{ desc[0] | safe }}</b></a>
+        <b>{{ desc[0] | safe }}</b>
     </p>
-    <p class="campaign-metadata">
-      Created: {{ desc[3].date() }}
-    </p>
-    <p class="campaign-metadata">
-      Signatories: {{ desc[4] }}
-    </p>
-    <p class="campaign-excerpt">
-      {{ desc[1] | striptags() | safe | truncate(450) }}
-    </p>
+    <table class="campaign-card-table">
+      <tr>
+        <td style="width: 10em;">
+          <p class="campaign-metadata">
+            Created: {{ desc[3].date() }}<br />
+            Signatories: {{ desc[4] }}
+          </p>
+        </td>
+        <td>
+          <p class="campaign-metadata" style="color: #333;">
+            {{ desc[1] | striptags() | safe | truncate(450) }}
+          </p>
+        </td>
+      </tr>
+    </table>
+    </div>
+    </a>
     {% endif %}
     {% endfor %}
-    <hr>
     {% if campaigns.items() | length == 2 %}
     <p class="campaign-entries">None</p>
     {% endif %}

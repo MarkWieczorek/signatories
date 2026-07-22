@@ -27,9 +27,9 @@
 
     <preheader>{% block campaign_header %}{% endblock %}</preheader>
 
-    <header>
+    <header style='background-image: url("../static/img/{{ background_image }}"); background-size: cover; background-repeat: no-repeat;'>
         <div class="container">
-            <h1><a href="{{ header_path }}">{{ header_title | safe }}</a></h1>
+            <h1><a href="{{ header_path }}"><b>{{ header_title | safe }}</b></a></h1>
             <h3 class="short">{{ header_subtitle | safe }}</h3>
         </div>
     </header>
@@ -52,7 +52,7 @@
                         <a href="{{ footer_url }}" target="_blank">{{ footer_url_name }}</a>
                     </p>
                     {% if thank_prc is true %}
-                    <p class="footer-small">
+                    <p class="footer-thanks">
                         Created by the <a href="https://coop.planetary-research.org" target="_blank">Planetary Research Cooperative</a>
                     </p>
                     {% endif %}

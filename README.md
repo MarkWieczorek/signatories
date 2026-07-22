@@ -56,9 +56,12 @@ everyone_is_editor = False
 # Set favicon (use "" for none). File name is with respect to static/img
 favicon = "favicon.ico"
 
+# Set header background image (use "" for none). File name is with respect to static/img
+background = ""
+
 # Default parameters for the home page
 site_title = "Signatories"
-site_subtitle = "Open source signing of statements and petitions"
+site_subtitle = "Collect signatures for an open letter, a letter of support, or a petition."
 site_path = "/"
 site_description = "Sign an open letter, a letter of support, an online petition, a statement, or a declaration."  # used in the meta description tag
 

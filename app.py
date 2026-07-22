@@ -150,6 +150,7 @@ base_data = {
     "role_id": 0,
     "everyone_is_editor": config.everyone_is_editor,
     "site_description": config.site_description,
+    "background_image": config.background,
 }
 
 base_alerts = {
@@ -743,6 +744,10 @@ def create():
                 alerts["danger"] = "Action slug cannot contain spaces."
             elif action_slug in reserved_actions:
                 alerts["danger"] = "Action slug is reserved. Please choose another."
+            elif new_campaign.action_name == '':
+                alerts["danger"] = "You must enter a campaign title."
+            elif new_campaign.action_kind == '':
+                alerts["danger"] = "You must enter an action kind."
             else:
                 db.session.add(new_campaign)
                 db.session.commit()
@@ -905,15 +910,20 @@ def edit(slug):
             edit_campaign.sort_alphabetical = sort_alphabetical
             edit_campaign.allow_anonymous = allow_anonymous
 
-            db.session.commit()
+            if edit_campaign.action_name == '':
+                alerts["danger"] = "You must enter a campaign title."
+            elif edit_campaign.action_kind == '':
+                alerts["danger"] = "You must enter an action kind."
+            else:
+                db.session.commit()
 
-            base_data["redirect_alerts"] = {
-                "success": "Campaign updated.",
-                "danger": None,
-                "info": None,
-                "warning": None,
-            }
-            return redirect(editor_URI)
+                base_data["redirect_alerts"] = {
+                    "success": "Campaign updated.",
+                    "danger": None,
+                    "info": None,
+                    "warning": None,
+                }
+                return redirect(editor_URI)
 
         if request.form.get("mode") == "close_activate":
             if request.form["is_active"] == "Active":

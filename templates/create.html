@@ -58,7 +58,7 @@
         <input type="hidden" name="mode" value="create_campaign">
         <div>
             <p class="create-item">
-                Action kind (open letter, letter of support, statement, declaration, petition).
+                <span style="color: red">*</span> Action kind (open letter, letter of support, statement, declaration, petition).
                 Used as a subtitle in the header and in the button "Sign the ...".
             </p>
             <input type="text" class="form-control" name="action_kind" placeholder="" value="{{ form_kind }}">
@@ -66,21 +66,21 @@
 
         <div>
             <p class="create-item">
-                Action title: displayed in the page header
+                <span style="color: red">*</span> Action title: displayed in the page header
             </p>
             <input type="text" class="form-control" name="action_name" placeholder="" value="{{ form_name }}">
         </div>
 
         <div>
             <p class="create-item">
-                Action subtitle: displayed above the main text in bold
+                Action subtitle: displayed above the main text in bold (may be left blank)
             </p>
             <input type="text" class="form-control" name="action_short_description" placeholder="" value="{{ form_short_description }}">
         </div>
 
         <div>
             <p class="create-item">
-                Action slug: a unique string that will be used as part of the campaign URL
+                <span style="color: red">*</span> Action slug: a unique string that will be used as part of the campaign URL
             </p>
             <input type="text" class="form-control" name="action_slug" placeholder="" value="{{ form_slug }}">
         </div>
@@ -95,7 +95,7 @@
 
             <script>
                 const toolbarOptions = [
-                    [{ 'header': [1, 2, 3, 4, false] }],
+                    [{ 'header': [1, 2, 3, false] }],
                     ['bold', 'italic', 'underline', 'strike'],
                     ['link'],
                     ['blockquote'],

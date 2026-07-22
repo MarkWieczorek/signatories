@@ -57,6 +57,7 @@ else:
 
 # Default parameters for the home page
 favicon = os.getenv("favicon")
+background = os.getenv("background")
 site_title = os.getenv("site_title")
 site_subtitle = os.getenv("site_subtitle")
 site_path = os.getenv("site_path")
